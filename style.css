@@ -3,6 +3,8 @@
   --secondary-color: #333;
   /* --accent-color: #9375d2; */
   --accent-color: #7155ae;
+  --weak-color: #ababab;
+  --highlight-color: #c13b3bdc;
   --accent-bg-color: #e3e4f3e1;
   /* --accent-color: #667eea; */
   --text-color: #2d3748;
@@ -217,12 +219,16 @@ p {
 .table-container {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+.col-right-table {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 /* .table-container-ablation {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 } */
 
 
-.image-container:hover, .table-container:hover, .video-container:hover, .table-container-ablation:hover {
+.image-container:hover, .table-container:hover, .video-container:hover, .table-container-ablation:hover, .col-right-table:hover {
   /* transform: translateY(-5px); */
   box-shadow: 0 10px 30px 0px rgba(0, 0, 0, 0.25), 0 10px 15px 0px rgba(0, 0, 0, 0.15);
 }
@@ -243,7 +249,11 @@ p {
   display: block;
   margin: 1rem auto 2rem auto;
 }
-
+.small-image {
+  max-width: 60%;
+  display: block;
+  margin: 1rem auto 1rem auto;
+}
 .medium-image {
   max-width: 85%;
   display: block;
@@ -744,7 +754,7 @@ pre {
 /* background: linear-gradient(45deg, #9578e4, #527f8c); */
 /* background: linear-gradient(45deg, #FF512F, #FF6F61, #DD2476); */
 .gradient-text {
-    background: linear-gradient(45deg, #5d2fbf, #06c29c);
+    background: linear-gradient(45deg, #ffe600, #000000,  #ffe100);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -781,7 +791,7 @@ pre {
 
 .advantages-table {
   width: 90%;
-  border-collapse: collapse;
+  /* border-collapse: collapse; */
   position: relative;
   font-size: 1rem;
   line-height: 1.5;
@@ -818,8 +828,8 @@ pre {
 }
 
 /* Simple VRA on/off icon colors */
-.advantages-table .vra-yes { color: #63c7a4; font-size: 1rem; transition: color .2s ease; }
-.advantages-table .vra-no { color: #f29a9a; font-size: 1rem; transition: color .2s ease; }
+.advantages-table .vra-yes { color: #f9f059; font-size: 1rem; transition: color .2s ease; }
+.advantages-table .vra-no { color: #000000; font-size: 1rem; transition: color .2s ease; }
 
 @media (max-width: 768px) {
   .advantages-table .model-col { width: 90px; max-width: 90px; font-size: 0.85rem; }
@@ -836,6 +846,15 @@ pre {
 
 .advantages-table strong {
     color: var(--accent-color);
+}
+
+.advantages-table weak {
+    color: var(--weak-color);
+    font-size: small;
+}
+.advantages-table highlight {
+    color: var(--highlight-color);
+    font-size: small;
 }
 
 @media (max-width: 768px) {
@@ -988,7 +1007,7 @@ pre {
 }
 
 /* Shrink image inside two-column framework section (Option 1) */
-.two-col .col-right img {
+.two-col .col-right img .small-image{
   max-width: 80%; /* adjust 70~85% as needed */
   margin: 0 auto 0.5rem auto;
   display: block;
@@ -996,12 +1015,33 @@ pre {
 
 /* Adjust column width ratio: give more space to text (left) than image (right) */
 .two-col .col-left {
-  flex: 1.2 1 0; /* increase text width */
+  flex: 0.4 1 0; /* increase text width */
 }
 
 .two-col .col-right {
   flex: 0.8 1 0; /* decrease image column width */
 }
+
+/* Adjust column width ratio: give more space to text (left) than image (right) */
+.col-left-table {
+  flex: 0.4 1 0; /* increase text width */
+  padding: 1rem;
+  position: relative;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  background-color: white;
+  overflow-x: auto;}
+
+.col-right-table {
+  flex: 0.8 1 ; /* decrease image column width */
+  margin: 1rem 2;
+  padding: 1rem;
+  position: relative;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  background-color: white;
+  overflow-x: auto;}
+
 
 /* Optional: tighten right image container padding a bit */
 .two-col .col-right .image-container {
@@ -1076,6 +1116,9 @@ pre {
   box-shadow: 0 10px 30px 0px rgba(0, 0, 0, 0.25), 0 10px 15px 0px rgba(0, 0, 0, 0.15);
 }
 
-.bold-text {
-    font-weight: 800;
+.bold-text { font-weight: 800; }
+
+
+.highlight-row {
+    background-color: #f3f1f56e;
 }
