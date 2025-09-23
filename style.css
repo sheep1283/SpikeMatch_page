@@ -2,16 +2,16 @@
   --primary-color: #000;
   --secondary-color: #333;
   /* --accent-color: #9375d2; */
-  --accent-color: #7155ae;
+  --accent-color: #d5bf01;
   --weak-color: #ababab;
   --highlight-color: #c13b3bdc;
-  --accent-bg-color: #e3e4f3e1;
+  --accent-bg-color: #f0e58230;
   /* --accent-color: #667eea; */
   --text-color: #2d3748;
   --light-text: #4a5568;
   --background-color: #ffffff;
   --light-bg: #f7fafc;
-  --border-color: #e2e8f0;
+  --border-color: #e9e9e9;
   --shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.1), 0 5px 20px 0px rgba(0, 0, 0, 0.05);
   --transition: all 0.3s ease;
 }
@@ -1120,5 +1120,5 @@ pre {
 
 
 .highlight-row {
-    background-color: #f3f1f56e;
+    background-color: #e8e8cf2c;
 }

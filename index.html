@@ -74,12 +74,12 @@
         <div class="container">
             <nav class="main-nav">
                 <ul class="nav-links">
-                    <li><a href="#Overview">Overview</a></li>
-                    <li><a href="#pilot-study">Analysis</a></li>
+                    <li><a href="#overview">Overview</a></li>
+                    <li><a href="#motivation">Motivation</a></li>
                     <li><a href="#framework">Framework</a></li>
-                    <li><a href="#visual-representation-alignment">Methods</a></li>
-                    <li><a href="#ablation-studies">Ablation Studies</a></li>
+                    <li><a href="#experimental-results">Experiment</a></li>
                     <li><a href="#analysis">Analysis</a></li>
+                    <li><a href="#conclusion">Conclusion</a></li>
                     <li><a href="#citation">Citation</a></li>
                 </ul>
             </nav>
@@ -113,7 +113,7 @@
                     </a>
                 </div>
                 <div class="base-col author-col">
-                    <a target="_blank" class="author-text">
+                    <a href="https://cvlab.kau.ac.kr/" target="_blank" class="author-text">
                         Sunok Kim<sup>2,†</sup>
                     </a>
                 </div>
@@ -151,7 +151,7 @@
                 <b>TL;DR</b>: We propose a novel SSL method for Spiking Neural Networks (SNNs) that combines pseudo-labeling and consistency regularization within a FixMatch framework, leveraging temporal dynamics for agreement-based pseudo-labeling without extra parameters. 
             </div>
 
-            <div id="abstract" class="base-row section">
+            <div id="overview" class="base-row section">
                 <h2>Overview</h2>
                 <p class="paragraph">
                     We introduce <Strong>SpikeMatch</Strong>, an agreement-based pseudo-labeling method that treats the temporal outputs of an SNN model as multiple predictions within a co-training framework. 
@@ -167,11 +167,11 @@
                     <img src="images_spikematch/co-training.png" class="img large-image" alt="co-training">
                 </div>
             </div>
-            <p> Unlike conventional ANN-based models that require extra parameters to generate multiple views, SNNs naturally produce diverse predictions across time steps through binary spike signals. SpikeMatch leverages this temporal dynamic to enable agreement-based pseudo-labeling, offering a parameter-free approach to diversity and robustness.
+            <p class="paragraph"> Unlike conventional ANN-based models that require extra parameters to generate multiple views, SNNs naturally produce diverse predictions across time steps through binary spike signals. SpikeMatch leverages this temporal dynamic to enable agreement-based pseudo-labeling, offering a parameter-free approach to diversity and robustness.
             </p>
 
-            <section id="Analysis" class="section">
-                <h2>Analysis</h2>
+            <section id="motivation" class="section">
+                <h2>Motivation</h2>
                 <p class="paragraph">
                     We conduct an empirical analysis of the leakage factor in Leaky Integrate-and-Fire (LIF) neurons. Our results show that higher leakage from the previous time step leads to more diverse predictions, which are crucial for learning distinctive semantic features in semi-supervised settings with limited labeled data.
                 </p>
@@ -180,7 +180,7 @@
                         <h3>
                             Discriminative features
                         </h3>
-                        <p>
+                        <p class="paragraph">
                             We visualize the temporal feature responses using the Spiking Activation Map (SAM). As the leakage factor increases, the SAM outputs become more diverse across time steps, providing the model with richer feature variations that facilitate learning of class-discriminative representations.
                         </p>
                     </div>
@@ -201,7 +201,7 @@
                             Cosine similarity
                         </h3>
                         <p>
-                            Even without any explicit diversity constraints, increasing the leakage factor leads to a consistent decrease in mean cosine similarity across all random seeds. This indicates that the model produces more diverse temporal features as leakage factor increases.
+Without explicit constraints, a higher leakage factor consistently lowers cosine similarity, indicating more diverse temporal features.
                         </p>
                     </div>
                     <div class="col-right img">
@@ -225,14 +225,8 @@
                     </div>
                 </div>
                 <p class="paragraph">
-To further support our claim that a higher leakage factor (τ) enhances temporal diversity in spiking neural networks, we perform a supervised analysis using multiple diversity metrics. We extend cosine similarity analysis by incorporating additional metrics that capture complementary aspects of diversity. Specifically, we use pairwise KL divergence to assess the dissimilarity of predictions over time, temporal variance to evaluate the spread of features, and effective rank to quantify the dimensional richness of temporal representations. We vary τ from 0.1 to 0.8 and evaluate these metrics
-on the CIFAR-10 dataset.
-</p>
-<ul style="margin-left: 3em; line-height: 2.0;">
-  <li><strong>(a) KL divergence</strong> increases as predictions across time steps become more distinct.</li>
-  <li><strong>(b) Temporal variance</strong> grows, indicating a wider distribution of features.</li>
-  <li><strong>(c) Effective rank</strong> rises, showing that temporal features span a higher-dimensional space with reduced redundancy.</li>
-</ul>
+To validate that a higher leakage factor (τ) improves temporal diversity, we analyze CIFAR-10 using KL divergence, temporal variance, and effective rank. All three metrics consistently increase as τ grows, confirming more diverse and distinct temporal features.
+
 
             </section>
 
@@ -243,37 +237,26 @@ on the CIFAR-10 dataset.
                     <div class="image-content">
                         <img src="images_spikematch/overall_framework.png" class="img large-image" alt="Overall framework">
                         <div class="image-caption">
-                            <p>
-    <strong>(left)</strong>: 
-    The weakly augmented labeled image 
-    <span style="color: #FA6C64;">(red)</span> 
-    produces <em>T</em> outputs through the SNN model, which are optimized using the TET loss. 
-    For unlabeled data, both weakly 
-    <span style="color: #8FbDF4;">(blue)</span> 
-    and strongly 
-    <span style="color: #97B557;">(green)</span> 
-    augmented images pass through the same SNN model. The <em>T</em> outputs from each image are partitioned and averaged into <em>M</em> predictions. The predictions from the weakly augmented image serve as soft pseudo-labels, and their agreement is used to optimize the strongly augmented image via cross-entropy.
-                                </p>
-                                <p>
-    <strong>(right)</strong>: 
-    A pseudo-label from one collection 
-    <span style="color: #97B557;">(green)</span> 
-    is used when the remaining <em>M−1</em> collections 
-    <span style="color: #8FbDF4;">(blue)</span> agree on the same class with the highest probability. Among them, the prediction with the highest confidence is selected as the soft pseudo-label.
-    </p>
+<p>
+<strong>(left)</strong>: A labeled image <span style="color: #FA6C64;">(red)</span> and unlabeled images 
+<span style="color: #8FbDF4;">(blue)</span>, <span style="color: #97B557;">(green)</span> pass through the SNN, producing <em>M</em> averaged predictions. Weakly augmented outputs guide strong ones via agreement-based pseudo-labeling.
+</p>
+<p>
+<strong>(right)</strong>: A pseudo-label <span style="color: #97B557;">(green)</span> is adopted only when the remaining <em>M−1</em> predictions <span style="color: #8FbDF4;">(blue)</span> agree on the same class, with the highest-confidence output selected.
+</p>
                         </div>
                     </div>
                 </div>
                 <p>
-SpikeMatch embeds spiking neural networks into a co-training framework by treating their temporal outputs as multiple diverse views. Unlike ANN-based co-training that requires multiple models or classifier heads, the intrinsic dynamics of SNNs naturally produce varied predictions across time steps. These outputs are grouped into collections, each serving as an independent prediction. For unlabeled data, soft pseudo-labels are generated from weakly augmented samples, and a label is only adopted when the remaining collections agree on the same class. This agreement-driven process filters out unreliable predictions, mitigates confirmation bias, and enables each temporal view to supervise the others, effectively realizing co-training within a single SNN.
+SpikeMatch treats temporal outputs as multiple views within one SNN. Agreement among weakly augmented predictions generates reliable pseudo-labels for strong augmentations, enabling co-training without extra parameters.
                 </p>
             </section>
             
-            <section id="main-results" class="section">
+            <section id="experimental-results" class="section">
                 <h2> Experimental results </h2>
-                <p> We evaluate SpikeMatch on CIFAR-10, STL-10, ImageNet, and neuromorphic datasets, demonstrating its effectiveness across diverse benchmarks for semi-supervised image classification.</p> 
+                <p class="paragraph"> We evaluate SpikeMatch on CIFAR-10, STL-10, ImageNet, and neuromorphic datasets, demonstrating its effectiveness across diverse benchmarks for semi-supervised image classification.</p> 
                 <h3>Results on CIFAR-10 & CIFAR-100 under various label conditions</h3>
-                    <p>
+                    <p class="paragraph">
                     SpikeMatch consistently outperforms existing semi-supervised learning methods across different label regimes on CIFAR-10 and CIFAR-100. 
                     Even with extremely few labeled samples per class, our approach achieves higher accuracy and stability by leveraging temporal agreement for reliable pseudo-labeling.
                     </p>
@@ -372,15 +355,13 @@ SpikeMatch embeds spiking neural networks into a co-training framework by treati
                 </table>
                     <p class="image-caption"> Accuracy (%) on CIFAR-10 and CIFAR-100 of 3 different random seeds. The best results is in bold.</p>
                 </div>  
-            </section>
-                <section id="additional-results" class="section">
                 <div class="two-col">
                     <div class="col-left">
                         <h3>
                             ImageNet with 100 labels per class
                         </h3>
                         <p class="paragraph">
-To assess performance on a deeper network and a larger dataset, we evaluate SpikeMatch using SEW-ResNet-50 on ImageNet. Even in this challenging setting, SpikeMatch outperforms SoftMatch, demonstrating its effectiveness with deep backbones.
+On ImageNet with SEW-ResNet-50, SpikeMatch outperforms SoftMatch, showing strong effectiveness even with large-scale data and deep backbones.
 
                         </p>
                     </div>
@@ -418,8 +399,7 @@ To assess performance on a deeper network and a larger dataset, we evaluate Spik
                             DVS-CIFAR-10 with 1% labels
                         </h3>
                         <p class="paragraph">
-To evaluate SpikeMatch on event-based neuromorphic data, we conduct experiments on CIFAR10-DVS. For strong augmentation, we adopt EventAugment to preserve the temporal structure of events while avoiding transformations designed for natural images.
-
+We evaluate SpikeMatch on the event-based CIFAR10-DVS dataset, preserving the temporal structure of events and capturing their intrinsic diverse patterns.
                         </p>
                     </div>
                     <div class="col-right-table">
@@ -499,14 +479,14 @@ On the more challenging STL-10 dataset with high-resolution images, SpikeMatch o
                 </p>
             </section>
 
-            <section id="efficiency" class="section">
-                <h2>Energy and label efficiency</h2>
+            <section id="analysis" class="section">
+                <h2>Analysis</h2>
+                <h3>Energy and label efficiency</h3>
                 <div class="two-col">
                     <div class="col-left">
-                        <h>
-SpikeMatch achieves remarkable performance on CIFAR-10 even with only one label per class, surpassing SoftMatch, a state-of-the-art ANN-based method. Unlike prior approaches that simply swap in an SNN backbone, our framework fully leverages temporal dynamics to extract discriminative features under extreme label scarcity, while preserving the energy efficiency of SNNs with over 20× higher efficiency compared to ANN counterparts.
-
-                        </h>
+                        <p class="paragraph">
+On CIFAR-10 with only one label per class, SpikeMatch surpasses state-of-the-art ANN methods while preserving over 20× higher energy efficiency, making it practical for low-label, low-power settings.
+                        </p>
                     </div>
                     <div class="col-right-table">
                         <table class="advantages-table">
@@ -542,10 +522,8 @@ SpikeMatch achieves remarkable performance on CIFAR-10 even with only one label 
                         </p>
                     </div>
                 </div>
-            </section>
 
-            <section id="Ablation" class="section">
-                <h2>Leakage configuration</h2>
+                <h3>Leakage configuration</h3>
                 <div class="table-container">
                     <table class="advantages-table">
                         <thead>
@@ -589,10 +567,7 @@ SpikeMatch achieves remarkable performance on CIFAR-10 even with only one label 
             </section>
 
             <section id="visualizations" class="section">
-                <h2>Visualization of effectiveness of SpikeMatch</h2>
-
-                <p></p>
-                
+                <h2>Visualization of effectiveness of SpikeMatch</h2>                
                 <div class="slideshow-container">
                     <div class="slideshow">
                         <div class="slide">
@@ -635,7 +610,7 @@ approach.</div>
             <section id="conclusion" class="section">
                 <h2>Conclusion</h2>
 
-                <p>
+                <p class="paragraph">
                     In this work, we presented SpikeMatch, a semi-supervised learning (SSL) framework
                     for SNNs that utilize their temporal dynamics via the leakage factor to achieve diverse
                     pseudo-labeling within a co-training framework. By utilizing 
@@ -658,7 +633,7 @@ approach.</div>
 
     <footer class="site-footer">
         <div class="container">
-            <p class="credit">Credit: The design of this project page is inspired by previous academic project pages, such as <a href="https://llm-grounded-diffusion.github.io/" target="_blank">LLM-grounded Diffusion</a> and <a href="https://describe-anything.github.io/" target="_blank">Describe-anything</a>.</p>
+            <p class="credit">Credit: The design of this project page is inspired by previous academic project pages, such as <a href="https://llm-grounded-diffusion.github.io/" target="_blank">LLM-grounded Diffusion</a>, <a href="https://describe-anything.github.io/" target="_blank">Describe-anything</a>, and <a href="https://cvlab-kaist.github.io/VIRAL/" target="_blank">VIRAL</a>.</p>
         </div>
     </footer>
 
